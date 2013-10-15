@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour {
 	public bool canShoot;
 	public float moveSpeed = 0;
 	public float turnSpeed = 0;
+	public GameObject DeathExplosion;
 	
 	private GameObject playerObject;
 	
@@ -45,7 +46,7 @@ public class Enemy : MonoBehaviour {
 		health -= amount;
 		
 		if(health <= 0) {
-			//TODO make explosion! with LFs!
+			Instantiate(DeathExplosion, transform.position, Quaternion.identity);
 			Destroy(gameObject);
 			return true;
 		} else {
