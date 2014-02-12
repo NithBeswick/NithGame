@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour {
 		}
 		
 		if(Input.GetAxis("Vertical") < 0) {
-			transform.Translate(Vector3.back * speed * Time.deltaTime);
+			transform.Translate(Vector3.back * speed * Time.deltaTime);			
 		} else if (Input.GetAxis("Vertical") > 0) {
 			transform.Translate(Vector3.forward * speed * Time.deltaTime);
 		}
@@ -105,6 +105,7 @@ public class PlayerMovement : MonoBehaviour {
 		}
 		
 		Debug.DrawRay(transform.position, transform.forward * 100, Color.yellow);
+		
 	}
 	
 	void SavePos() {
@@ -114,6 +115,24 @@ public class PlayerMovement : MonoBehaviour {
 				
 		//Better mode
 		SaveLoadManager.instance.saveFile.playerPosition = transform.position;
-		SaveLoadManager.instance.SaveRealSavefile();
+		SaveLoadManager.instance.SaveRealSavefile();		
+	}
+	
+	private Ray r;
+	private RaycastHit h;
+	public void MyMove(Vector3 dir) {
+		if(dir.y < 0) {
+			Ray ray = new Ray(transform.position, transform.up * -1);			
+			if(Physics.Raycast(ray, out h, -dir.y)) {
+				Vector3 pos = transform.position;
+				pos.x += dir.x;
+				pos.y = h.point.y;
+				pos.z += dir.z;
+				transform.position = pos;
+				return;
+			}
+		}
+		
+		transform.Translate(dir);
 	}
 }
